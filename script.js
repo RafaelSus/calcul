@@ -47,13 +47,18 @@ function charToNum(ch){
 function calculatePostfix(exp) {
     let a, b;
     let stack = new Stack();
-    for (let i = 0; i < exp.length; i++) {
-        if (isOperator(exp[i])){
+    let arr = [];
+    while(!exp.isEmpty()){
+        arr.push(exp.pop());
+    }
+    console.log(arr);
+    for (let i = arr.length - 1; i >= 0; i--) {
+        if (isOperator(arr[i])){
             a = stack.pop();
             b = stack.pop();
-            stack.push(operation(b, a, exp[i]));
+            stack.push(operation(b, a, arr[i]));
         }else{
-            stack.push(charToNum(exp[i]));
+            stack.push(charToNum(arr[i]));
         }
     }
     return stack.pop();
@@ -78,8 +83,16 @@ let infixToPostfix = function(exp){
                 else break;
             }
         }else{
-            if (exp[i] != '(')
-                expressionString.push(exp[i]);
+            let Num = 0;
+            let ok = false;
+            while (i < exp.length && !isOperator(exp[i]) && exp[i] != '(' && exp[i] != ')'){
+                ok = true;
+                Num = Num * 10 + charToNum(exp[i]);
+                i++;
+            }
+            console.log(Num);
+            if (ok)
+                expressionString.push(Num);
             if (flag == true){
                 if (operatorStack.get() != '('){
                     expressionString.push(operatorStack.get());
@@ -87,6 +100,7 @@ let infixToPostfix = function(exp){
                 }
                 flag = false;
             }
+            if (ok) i--;
         }
     }
     while (!operatorStack.isEmpty()){
@@ -96,14 +110,7 @@ let infixToPostfix = function(exp){
             expressionString.push(s);
         else break;
     }
-    let result = "";
-    while(!expressionString.isEmpty()){
-        result += expressionString.get();
-        expressionString.pop();
-    }
-    result = reverseString(result);
-    console.log(result);
-    return result;
+    return expressionString;
 }
 
 
@@ -114,6 +121,8 @@ function calc() {
  
     document.getElementById('result').innerHTML = html;
 }
+
+
 
 
 
