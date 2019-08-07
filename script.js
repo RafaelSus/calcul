@@ -60,7 +60,6 @@ function calculatePostfix(exp) {
 }
 
 let infixToPostfix = function(exp){
-    exp = exp.split(' ');
     let expressionString = new Stack();
     let operatorStack = new Stack();
     let flag = false;
